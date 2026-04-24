@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.91.0",
     "postgres": "^3.4.9"
   },
   "devDependencies": {
