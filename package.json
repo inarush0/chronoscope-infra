@@ -2,8 +2,9 @@
   "name": "chronoscope-infra",
   "private": true,
   "type": "module",
-  "dependencies": {
-    "postgres": "^3.4.9"
+  "scripts": {
+    "build-db": "bun scripts/build-db.ts",
+    "validate": "bun scripts/validate.ts"
   },
   "devDependencies": {
     "@types/node": "^25.6.0"

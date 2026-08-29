@@ -1,33 +1,20 @@
+# The dataset is a static SQLite file built by scripts/build-db.ts, so the
+# stack is a single service. Mount the file locally, or unset DATABASE_FILE and
+# set DATABASE_URL to fetch it from object storage instead.
 services:
-  postgres:
-    image: postgres:17-alpine
-    environment:
-      POSTGRES_DB: chronoscope
-      POSTGRES_USER: chronoscope
-      POSTGRES_PASSWORD: chronoscope
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./postgres/migrations:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U chronoscope"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
   app:
     build:
       context: ../chronoscope
       dockerfile: Dockerfile
     environment:
-      DATABASE_URL: postgresql://chronoscope:chronoscope@postgres:5432/chronoscope
+      DATABASE_FILE: /data/chronoscope.sqlite
       ORIGIN: http://localhost:3000
+      DEFAULT_DATASET: ${DEFAULT_DATASET:-bible}
+      # Pick up `bun run build-db` without restarting. Leave unset in production.
+      DATASET_RELOAD: ${DATASET_RELOAD:-1}
+    volumes:
+      # Mount the directory, not the file: build-db replaces the .sqlite, and a
+      # single-file bind mount would pin the old inode inside the container.
+      - ./data:/data:ro
     ports:
       - "3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-volumes:
-  postgres_data:
