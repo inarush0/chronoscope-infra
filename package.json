@@ -7,6 +7,10 @@
     "validate": "bun scripts/validate.ts"
   },
   "devDependencies": {
-    "@types/node": "^25.6.0"
+    "@types/node": "^25.6.0",
+    "bun-types": "^1.4.0"
+  },
+  "dependencies": {
+    "typescript": "^7.0.2"
   }
 }
