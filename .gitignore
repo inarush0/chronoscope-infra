@@ -1,3 +1,8 @@
 node_modules/
 .env
 *.env
+
+# Build artifact — rebuild with `bun run build-db`. The authored event files in
+# data/events/ are the source of truth and stay in version control.
+data/*.sqlite
+data/*.sqlite-journal
